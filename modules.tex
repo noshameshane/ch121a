@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amssymb,array}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{caption}
+
+\begin{document}
+
+\section*{Running and Compiling Lammps with a Module \\ Notes by Shane Flynn, sflynn@caltech.edu}
+I have worked with Shyam (7/2016) for developing an efficient method to compile the necessary software to perform lammps calculations. 
+Lammps is an opensource code that is constantly changing, it would be inconvenient for each student in the group to compile the software whenever an update occurs. 
+One solution to this problem is to use a module.
+Environment modules are packages that dynamically modify a users enviroment variables (the enviroment is where your computer looks to use software). 
+It changes your path to a location where one user installs and maintains the software you are hoping to use. 
+So in short modules are useful for handling software that is changing and therefore has different versions. 
+
+In the 2pt homework assignment we will be using the Lammps software to run molecular dynamics calculations.
+To do these calculations we will copy an existing module set up by Shyam, if a new version is installed Shyam will update his module and then everyone who uses this will also have updated software.
+Log into ion or atom and type the following \\
+
+\% module load use.own \\
+\% cp ~ch121sms/privatemodules/saladimodules ~/privatemodules \\
+
+These two lines will make a directory called privatemodules on your computer (you only need to do this once and then never again!). 
+Now when we want to submit a Lammps calculation to the cluster we need to call on this module to load the software. 
+Inside of you submission script the following lines need to be added to the bottom\\
+\% module load use.own \\
+\% module load saladimodules \\
+\% module load openmpi-x86\_64 \\
+\% module load lammps \\
+
+mpirun -np 4 lmp -in in.waterbox\\
+
+The first 4 load different modules Shyam has constructed for maintaining software. 
+use.own tells the system to look in our privatemodules directory.
+Next we load the saladimodules (the module that contains current lammps).
+Openmpi is a module for the parallel computing used in lammps, so we load this and we load lammps, the final line then uses these modules to submit a sample calculation.
+In this case we tell mpi to use 4 processors to run lammps (lmp) with an in file called in.waterbox
+
+\subsection*{Module Commands}
+Now that we have some modules installed we can use some terminal commands to navigate. 
+While logged into atom, in teh terminal type the following.\\
+
+\%module avail \\
+
+As you guessed this command is used to see what maodules you have available to you. 
+It will list every module available to you, and every version of the software that has a module.\\
+
+Remember, all a module does is temporarily change the path variable in your .cshrc, so that you can access any software it points to. 
+Therefore you make a module point to a location where software is being updated and maintained.
+Modules are written in a languge known as tcl, the files themselvels are usually easy to understand, but this languages exist if you wish to write your own module. 
+
+To load a module you simply type \\
+
+\% module load "name" "version".\\
+
+To see what modules you have loaded you can use \\
+
+\% module list. 
+
+After installing the specified modules aboue, module list should return 5 different modules (rocks-openmpi, use.own, saladimodules, openmpi-x86\_64, and lammps/2015May15). 
+
+With the specified modules installed we are not ready to run lammps molecular dynamics calculations!
+
+\end{document}
