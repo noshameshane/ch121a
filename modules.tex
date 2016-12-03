@@ -10,9 +10,9 @@
 \usepackage{graphicx}
 \usepackage{caption}
 
-% for code formatting
-\usepackage{listings}
-\lstset{language=bash}
+% no indent extra space between paragraphs
+\usepackage[parfill]{parskip}
+
 
 % for urls
 \usepackage{hyperref}
@@ -24,16 +24,22 @@
 
 \begin{document}
 
-\section*{Running and Compiling LAMMPS with Modulefiles \\ Notes by Shane Flynn, \url{sflynn@caltech.edu}}
-I have worked with Shyam Saladi (7/2016) for developing an efficient method to run the necessary software to perform LAMMPS calculations.
-LAMMPS is an opensource code that is constantly changing, it would be inconvenient for each student in the group to need to compile the software whenever an update occurs.
-One solution to this problem is to use \texttt{modulefiles}.
-Environment modules are packages that dynamically modify a user's environment variables (the environment is where your computer looks to use software).
-It changes your path to a location where one user installs and maintains the software you are hoping to use.
-So in short modules are useful for handling software that is changing and therefore has different versions.
+\section*{Running LAMMPS with Modulefiles \\ Notes by Shane Flynn, \url{sflynn@caltech.edu}}
 
-In the 2pt homework assignment we will be using the LAMMPS software to run molecular dynamics calculations.
-To do these calculations we will copy an existing module set up by Shyam, if a new version is installed Shyam will update his module and then everyone who uses this will also have updated software.
+I have worked with Shyam Saladi (\url{saladi@caltech.edu}) to develop an efficient method to run the necessary software to perform LAMMPS calculations.
+LAMMPS is an open-source code that is constantly changing; it would be inconvenient for each user/student in the group to need to compile and configure (\textit{i.e.}, set environment variables) the software whenever an update occurs.
+
+When loading software, many parts of a user's environment variables must be modified.
+When setting up software, some commonly set environment variables include the following: \texttt{PATH}, \texttt{LD\_LIBRARY\_PATH}, \texttt{MANPATH}.
+For example, the \texttt{PATH} specifies where the current shell (\textit{e.g.} \texttt{bash}, \texttt{csh}, \texttt{zsh}) looks for executable files.
+
+One solution to this problem is to use \texttt{modulefiles}.
+\href{http://modules.sourceforge.net/}{Environment Modules} is a software package that dynamically modify a user's environment variables.
+With a single command, it modifies/unmodifies your environment to easily run the software you are hoping to use.
+Modules is a organized way to manage different versions of a single piece of software and software that has conflicting dependencies.
+
+In the 2pt homework assignment, we will use LAMMPS to run molecular dynamics calculations.
+To do these calculations, we will copy Shyam's modulefiles configuration to bring software he has installed/configured into view. If a new version is installed, Shyam can update his module files and then everyone with his configuration will also have access to the updated software.
 Log into \texttt{ion} or \texttt{atom} and type the following:
 
 \begin{lstlisting}
@@ -42,8 +48,8 @@ Log into \texttt{ion} or \texttt{atom} and type the following:
 \end{lstlisting}
 
 These two lines will make a directory called \texttt{privatemodules} on your computer (you only need to do this once and then never again!).
-Now when we want to submit a LAMMPS calculation to the cluster we need to call on this module to load the software.
-Inside of you submission script the following lines need to be added to the bottom:
+Now when we want to submit a LAMMPS calculation to the cluster, we need to load this module to bring the software into view.
+Inside of your submission script, the following lines need to be added to the bottom:
 
 \begin{lstlisting}
 % module load use.own
@@ -54,41 +60,43 @@ Inside of you submission script the following lines need to be added to the bott
 % mpirun -np 4 lmp -in in.waterbox
 \end{lstlisting}
 
-The first 4 load different modules Shyam has constructed for maintaining software.
-\texttt{use.own} tells the system to look in our \texttt{privatemodules} directory.
-Next we load the \texttt{saladimodules} (the module that contains current LAMMPS).
-OpenMPI is a module for the parallel computing used in LAMMPS, so we load this and we load LAMMPS, the final line then uses these modules to submit a sample calculation.
-In this case we tell mpi to use 4 processors to run LAMMPS (\texttt{lmp}) with an \texttt{in} file called \texttt{in.waterbox}
+The first 4 lines load various modules Shyam has constructed for maintaining software:
+\texttt{use.own} tells the system to look in our \texttt{privatemodules} directory (the one created above).
+Next we load the \texttt{saladimodules} to bring Shyam's modules into view.
+OpenMPI is a software package that provides parallel computing capability. This is necessary to run LAMMPS across many/all processors on a compute node. Therefore, we load this and then, finally, LAMMPS. The last line starts a samplecalculation; to be clear, \texttt{mpirun} is from the \texttt{openmpi-x86\_64} module, \texttt{lmp} is from the \texttt{lammps} module).
+In this case we tell \texttt{mpi} to use 4 processors to run LAMMPS (\texttt{lmp}) with an \texttt{in} file called \texttt{in.waterbox}
 
 \subsection*{Module Commands}
-Now that we have some modules installed we can use some terminal commands to navigate.
-While logged into \texttt{atom}, in the terminal type the following:
+Now that we have Shyam's modules configured, we can use some commands to explore the set-up.
+While logged into \texttt{ion} or \texttt{atom}, at the console, type the following:
 
 \begin{lstlisting}
 % module avail
 \end{lstlisting}
 
-As you guessed this command is used to see what modules you have available to you.
-It will list every module available to you, and every version of the software that has a module.\\
+As you guessed, this command shows the modules that are available to you.
+It will list every module available, including each version of the software.
 
-Remember, all a module does is temporarily change the path variable in your \texttt{\symbol{126}/.cshrc}, so that you can access any software it points to.
-Therefore you make a module point to a location where software is being updated and maintained.
-Modules are written in a language known as \texttt{tcl}, the files themselves are usually easy to understand, but this languages exist if you wish to write your own module.
+Remember, all module files do is temporarily change environment variables.
+In particular, by changing the \texttt{PATH} variable, executables for software you want comes into view.
+Therefore, you make your own modulefile to point to a location where software is updated and maintained.
+Modules are written in a language known as \texttt{tcl}, the files themselves are easy to understand.
+You can painlessly write your own module for new software you'd like to set-up for yourself.
 
-To load a module you simply type
+To load a module at the console, simply type
 
 \begin{lstlisting}
 % module load `name'/`version'
 \end{lstlisting}
 
-To see what modules you have loaded you can use
+To see which modules you currently have loaded, you can use
 
 \begin{lstlisting}
 % module list
 \end{lstlisting}
 
-After installing the specified modules above, module list should return 5 different modules (\texttt{rocks-openmpi}, \texttt{use.own}, \texttt{saladimodules}, \texttt{openmpi-x86\_64}, and \texttt{lammps/2015May15}).
+After loading the specified modules above, \texttt{module list} should return 5 different modules (\texttt{rocks-openmpi}, \texttt{use.own}, \texttt{saladimodules}, \texttt{openmpi-x86\_64}, and \texttt{lammps/2015May15}).
 
-With the specified modules installed we are not ready to run LAMMPS molecular dynamics calculations!
+With the specified modules loaded, we are now ready to run LAMMPS molecular dynamics calculations!
 
 \end{document}
