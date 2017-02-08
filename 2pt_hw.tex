@@ -13,7 +13,7 @@
 \null\hfill\begin{tabular}[t]{l@{}}
   \textbf{HW. 5 Ch121 Atomic Simulations}\\
   \textit{Winter 2017}\\
-  \textit{TA: Daniel Brooks (daniel.brooks@caltech.edu)}
+  \textit{Email to: Daniel Brooks (daniel.brooks@caltech.edu)}
 \end{tabular}
 \vspace{10mm}
 
@@ -26,12 +26,7 @@ In this homework assignment we are going to become familiar with a common open s
 We will use LAMMPS to run molecular dynamics on a box of water which will give us a trajectory. 
 Next we will utilize a code written in the Goddard group known as 2PT (Two Phase Thermodynamics) to calculate the thermodynamic properties of our system, from the trajectory. \\
 
-As a challenge students will be given a polymer system which they will need to run dynamics on and then analyze. \\
-
-This homework assignment should be thought of as the 'midterm' for the class, you will need to give a full lab report of your findings.\\
-
-The water box calculation will be done to show you how the code works, you will then do your own analysis on the polymer system.
-Only the polymer system will be considered in the final write-up. \\
+After completing the calculation, you will prepare a brief report.\\
 
 \section*{Materials To Be Reviewed Before The Lab Session}
 \noindent\rule[0.5ex]{\linewidth}{1pt}\\
@@ -198,7 +193,7 @@ Write the following lines inside this file.\\
 \#PBS -q workq\\
 \#PBS -N wbox\_2pt\\
 cd \$PBS\_O\_WORKDIR\\
-~tpascal/codes/bin/md\_analysis waterbox\_2pt.in\\
+/ul/tpascal/codes/bin/md\_analysis waterbox\_2pt.in\\
 
 \item We are ready to submit this thermodynamics analysis, submit your job to the cluster (it should take a few minutes to calculate).
 \end{enumerate}
@@ -209,36 +204,9 @@ cd \$PBS\_O\_WORKDIR\\
 After running this calculation please take a look at each file that is generated (use the manual from Tod to help you understand what is happening). 
 Specifically look at the thermodynamics file and make sure you understand everything that we can learn about the system from doing a 2pt calculation.\\
 
-This is the end of the formal lab session material, the remainder of the homework assignment should be completed and discussed in your write-up.
+What can we learn about the thermodynamics of water from this 2PT analysis? Summarize your results in a short report (1-2 pages). You are encouraged to discuss with other members of the class.\\
 
-\section{Homework: Polymer Calculations}
-\noindent\rule[0.5ex]{\linewidth}{1pt}\\
-
-Now that we have completed a detailed example of how to analyze an MD system using 2PT, I would like for you to run a 2PT calculation on a polymer system. 
-I will provide you with a lammps in file and associated data file for this calculation.
-It is your job to run a lammps calculation on this system to get a trajectory for the polymer chains.
-Hint: get a trajectory size similar to the water case, don't run it for longer. 
-Another hint: never try to open a trajectory with vi, it is too large, instead use the less command (if this does not make sense ask or google). 
-Once you have your trajectory determine the entropy of the entire polymer system using 2pt just as we did for the water. \\
-
-Do you think it would be reasonable to assume that each polymer chain has about the same entropy?
-To test this run another calculation where you define each polymer chain as a group (to do this you will need to refer to the 2PT user manual). 
-
-A final comment do not make multiple copies of your trajectory file, your accounts have a limited amount of space.
-Instead simply move the trajectory file to wherever you want to run your calculation. \\
-
-So you need to get a trajectory for your polymer system, then analyze this trajectory using 2pt.
-Once you do this analysis set-up another 2pt calculation (using the same trajectory) where you define each polymer chain as a group and determine the thermodynamics of each chain). 
-
-\subsection*{Things to Consider}
-What atoms are in your polymer, what is this a polymer of?
-How many chains are making up the polymer you are studying in this simulation, how long are the chains?
-How do you cap the chains (i.e. how does a chain start and end).
-What is the charge on the atoms in your polymer, are they reasonable?
-Do some research, why should we care about polymers?
-What are the differences between a polymer electrolyte and a liquid electrolyte in the context of batteries?
-
-\section{Homework Polymer Write-Up}
+\section{Second half of the course}
 \noindent\rule[0.5ex]{\linewidth}{1pt}\\
 
 This is the final homework assignment for the class, the remainder of the course will be spent working on your individual research projects.
@@ -246,8 +214,6 @@ Therefore it is crucial that you have identified a project you would like to wor
 Remember Bill is a key resource for all of this, he will be able to provide advice, and to help put you in contact with people in the group.
 If for some reason you are unable to get in touch with group members Bill suggests, send Bill and email about it!\\
 
-For this homework assignment I am expecting a formal write-up of your results, think of this as a lab report. 
-Be warned this should be considered the "midterm" for the class, and should take you longer to complete than any of the previous reports.
 The final for the class will be a formal write-up of your original research, this assignment will be used to make sure you understand the type of information that is necessary for presenting (and potentially publishing) research in computational chemistry. 
 
 This report should consist of:
@@ -262,13 +228,9 @@ Below are some general comments meant to be suggestions, please make the report 
 A brief review of the problem, the system, and the methods of analysis. Then provide key results. Make it short and concise.
 
 \subsection*{Introduction and Methods}
-This is meant to be a brief review about polymers, not a summary of the 2PT formalism!
-You are welcome to give a few equations and some comments about the formalism, however, this is already published work and should be briefly summarized and cited (be warned it would take some non-equilibrium statistical mechanics and solid state physics to truly understand the methodology).
 Talk about the system we are studying, why it may be an important system, and why these types of calculations would be useful. 
 
 \subsection*{Results and Conclusions}
 Make sure your system and model are well defined for the reader.
 Interpret your calculations and give some analysis of why the results are such. 
-Make this your own, do some research on polymer batteries, and the useful application this type of research has in regards to a "greener" energy supply. 
-
 \end{document}
